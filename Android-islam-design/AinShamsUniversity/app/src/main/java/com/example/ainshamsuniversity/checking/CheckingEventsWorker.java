@@ -46,6 +46,8 @@ public class CheckingEventsWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
+        Log.d(TAG, "doWork: Events working...first");
+
 
 
         try {
@@ -59,6 +61,7 @@ public class CheckingEventsWorker extends Worker {
                 s = element.text();
                 checker += 0;
 
+
             }
 
             Document doc = Jsoup.connect("https://science.asu.edu.eg/ar/events").get();
@@ -68,6 +71,7 @@ public class CheckingEventsWorker extends Worker {
 
             String temp=element.text();
             if(!s.equals(temp)){
+                Log.d(TAG, "doWork: events notifi..." );
                 triggerNotification(temp);
                 s=temp;
 

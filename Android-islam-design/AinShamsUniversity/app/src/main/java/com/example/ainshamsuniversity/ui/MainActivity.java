@@ -18,7 +18,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.work.Constraints;
 import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.NetworkType;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkerParameters;
@@ -32,14 +34,19 @@ import com.google.android.material.navigation.NavigationView;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    Constraints constraints = new Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.UNMETERED)
+//            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .setRequiresCharging(true)
+            .build();
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
     WebView mWebView;
     TextView textView;
 
-    WorkManager workManager;
-    PeriodicWorkRequest periodicWorkRequest;
+    WorkManager workManagerEvents,workManagerNews,workManagerAnnounce;
+    PeriodicWorkRequest periodicWorkRequestNews, periodicWorkRequestEvents, periodicWorkRequestAnnounce;
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -47,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        textView=findViewById(R.id.text);
+        textView = findViewById(R.id.text);
 
         // navigation dawer and toolbar
 
@@ -71,47 +78,79 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //web view
         mWebView = findViewById(R.id.web);
         mWebView.loadUrl("https://science.asu.edu.eg/ar");
-        WebSettings webSettings= mWebView.getSettings();
+        WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webSettings.setAllowContentAccess(true);
         webSettings.setLoadWithOverviewMode(true);
         webSettings.setDomStorageEnabled(true);
         webSettings.setLoadsImagesAutomatically(true);
         webSettings.setAppCacheEnabled(true);
-        mWebView.setWebViewClient(new WebViewClient(){
+        mWebView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 return super.shouldOverrideUrlLoading(view, request);
             }
         });
 
-
-
-
-        periodicWorkRequest = new PeriodicWorkRequest.Builder(CheckingAnnouncementsWorker.class, 3, TimeUnit.SECONDS
+//        //Regester event checker
+        periodicWorkRequestEvents = new PeriodicWorkRequest.Builder(CheckingEventsWorker.class, 3, TimeUnit.SECONDS
         )
-                .addTag("chicking")
+               // .addTag("chicking")          we can ignore this sice we used enqueueUniquePeriodicWork XD
                 //.setConstraints(constraints)
-//                .setInputData(new Data.Builder()
-//                        .putString("URI", data)
-//                        .build())
                 .build();
-        workManager = WorkManager.getInstance(this);
-        //workManager.enqueue(periodicWorkRequest);
+        workManagerEvents = WorkManager.getInstance(this);
+        workManagerEvents.enqueue(periodicWorkRequestEvents);   //enqueueUniquePeriodicWork is better
 
 
-        workManager.enqueueUniquePeriodicWork(
-                        "checkevents",
-                        ExistingPeriodicWorkPolicy.REPLACE
-                        ,
-                        periodicWorkRequest);
+//        workManagerEvents.enqueueUniquePeriodicWork(
+//                "checkevents",
+//                ExistingPeriodicWorkPolicy.KEEP
+//                ,
+//                periodicWorkRequestEvents);
+
+        //Regester news checker
+        periodicWorkRequestNews = new PeriodicWorkRequest.Builder(CheckingNewsWorker.class, 3, TimeUnit.SECONDS
+        )
+               // .addTag("chicking")          we can ignore this sice we used enqueueUniquePeriodicWork XD
+                //.setConstraints(constraints)
+                .build();
+        workManagerNews = WorkManager.getInstance(this);
+        workManagerNews.enqueue(periodicWorkRequestNews);  // enqueueUniquePeriodicWork is better
+
+
+//        workManagerNews.enqueueUniquePeriodicWork(
+//                "checknews",
+//                ExistingPeriodicWorkPolicy.KEEP
+//                ,
+//                periodicWorkRequestNews);
+
+
+//        //Regester news checker
+        periodicWorkRequestAnnounce = new PeriodicWorkRequest.Builder(CheckingAnnouncementsWorker.class, 3, TimeUnit.SECONDS
+        )
+               // .addTag("chicking")          we can ignore this sice we used enqueueUniquePeriodicWork XD
+               // .setConstraints(constraints)
+                .build();
+        workManagerAnnounce = WorkManager.getInstance(this);
+        workManagerAnnounce.enqueue(periodicWorkRequestAnnounce);   //enqueueUniquePeriodicWork is better
+
+
+//        workManagerAnnounce.enqueueUniquePeriodicWork(
+//                "checkannounce",
+//                ExistingPeriodicWorkPolicy.KEEP
+//                ,
+//                periodicWorkRequestAnnounce);
+
+
+
+
         try {
-            String intent= getIntent().getStringExtra("open");
-            switch (intent){
+            String intent = getIntent().getStringExtra("open");
+            switch (intent) {
                 case "event":
                     mWebView.loadUrl("https://science.asu.edu.eg/ar/events");
                     break;
-                case"news":
+                case "news":
                     mWebView.loadUrl("https://science.asu.edu.eg/ar/news");
                     break;
                 case "announce":
@@ -149,7 +188,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()) {
             case R.id.home:
                 Toast.makeText(this, "Loading Home page...", Toast.LENGTH_LONG).show();
-                mWebView.loadUrl("https://science.asu.edu.eg/ar");
+                mWebView.loadUrl("https://science.asu.edu.eg/ar/page/47/private-ads");
                 drawerLayout.closeDrawer(GravityCompat.START);
                 break;
 
@@ -181,7 +220,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.gpa:
                 Toast.makeText(this, "Loading Facebook page...", Toast.LENGTH_LONG).show();
-                Intent intent=new Intent(getApplicationContext(),Gpa.class);
+                Intent intent = new Intent(getApplicationContext(), Gpa.class);
                 startActivity(intent);
                 drawerLayout.closeDrawer(GravityCompat.START);
                 break;
@@ -195,16 +234,3 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 }
-
-
-//        sevice
-//        String dataUrl="http://newportal.asu.edu.eg/science/ar/page/47/private-ads";
-//        Intent serviceIntent = new Intent(this, MService.class);
-//        serviceIntent.putExtra("uri",dataUrl);
-//        startService(serviceIntent);
-//try {
-//        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/Elgam3a.m"));
-//        startActivity(intent);
-//        } catch(Exception e) {
-//        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.facebook.com/appetizerandroid")));
-//        }

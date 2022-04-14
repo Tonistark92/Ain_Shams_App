@@ -1,10 +1,14 @@
 package com.example.ainshamsuniversity.ui;
 
+import static android.content.ContentValues.TAG;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -48,10 +52,29 @@ public class Splash extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent =new Intent(Splash.this, MainActivity.class);
-                startActivity(intent);
-                finish();
+                try {
+                    SharedPreferences settings = getSharedPreferences("prefs", 0);
+                    boolean firstRun = settings.getBoolean("firstRun", false);
+                    if ( firstRun==false)//if running for first time
+                    {
+                        Log.d(TAG, "run: intro");
+                        SharedPreferences.Editor editor = settings.edit();
+                        editor.putBoolean("firstRun", true);
+                        editor.commit();
+                        Intent i = new Intent(getApplicationContext(), IntroActivity.class);//Activity to be     launched For the First time
+                        startActivity(i);
+                        finish();
+                    } else {
+                        Intent intent = new Intent(Splash.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
+
+
         },SPLASH_MAX_TIME);
     }
 }

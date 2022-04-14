@@ -16,6 +16,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="m" >
         <activity
+            android:name=".ui.IntroActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.Gpa"
             android:exported="false" />
         <activity

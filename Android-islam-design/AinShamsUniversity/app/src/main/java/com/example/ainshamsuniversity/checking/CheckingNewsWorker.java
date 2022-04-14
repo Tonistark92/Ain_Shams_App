@@ -46,6 +46,8 @@ public class CheckingNewsWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
+                Log.d(TAG, "doWork: News working...first");
+
 
 
         try {
@@ -68,7 +70,7 @@ public class CheckingNewsWorker extends Worker {
             Element element = body_elements.first();
             String temp=element.text();
             if(!s1.equals(temp)){
-
+                Log.d(TAG, "doWork: news notifi..." );
                 triggerNotification(temp);
                 s1=temp;
 
@@ -94,7 +96,7 @@ public class CheckingNewsWorker extends Worker {
 
 
     private void triggerNotification(String body) {
-        //String GROUP_KEY_WORK_EVENTS = "com.android.example.WORK_EVENTS";
+
 
         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         //create an intent to open the event details activity

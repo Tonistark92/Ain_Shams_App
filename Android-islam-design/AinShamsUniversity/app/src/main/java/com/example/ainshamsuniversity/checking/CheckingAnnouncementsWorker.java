@@ -48,6 +48,8 @@ public class CheckingAnnouncementsWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
+        Log.d(TAG, "doWork: Annonce working...first");
+
 
 
         try {
@@ -57,7 +59,7 @@ public class CheckingAnnouncementsWorker extends Worker {
                 //Elements date_elements = doc.getElementsByClass("event-date");
                 Elements body_elements = doc.getElementsByClass("line-clamp-3 dir-rtl");
                 Element element = body_elements.first();
-                Log.d(TAG, "doWork: working...first" +element.text());
+//                Log.d(TAG, "doWork: working...first" +element.text());
                 s1 = element.text();
 
                 checker += 0;
@@ -69,11 +71,10 @@ public class CheckingAnnouncementsWorker extends Worker {
             Elements body_elements = doc.getElementsByClass("line-clamp-3 dir-rtl");
             Element element = body_elements.first();
             String temp = element.text();
-            Log.d(TAG, "doWork: working...first" +"almost");
-            if (!s1.equals(temp)) {
 
+            if (!s1.equals(temp)) {
+                Log.d(TAG, "doWork: announce notifi..." );
                 triggerNotification(temp);
-                Log.d(TAG, "doWork: working...first" +temp);
                 s1 = temp;
 
             }
