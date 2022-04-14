@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <group android:checkableBehavior="single">
+        <item
+            android:iconTint="@color/white"
+            android:title="Pages">
+            <menu>
+
+                <item
+
+                    android:id="@+id/home"
+                    android:icon="@drawable/icons8_home_26"
+                    android:title="Home"
+
+                    />
+                <item
+                    android:id="@+id/news"
+                    android:icon="@drawable/icons8_news_61"
+                    android:title="News"
+
+                    />
+                <item
+                    android:id="@+id/events"
+                    android:icon="@drawable/icons8_events_64"
+                    android:title="Events"
+
+                    />
+                <item
+                    android:id="@+id/ads"
+                    android:icon="@drawable/icons8_announcement_64"
+                    android:title="Announcements"
+
+                    />
+                <item
+                    android:id="@+id/gpa"
+                    android:icon="@drawable/icons8_gpa_64"
+                    android:title="GPA"
+
+                    />
+            </menu>
+
+
+        </item>
+
+
+    </group>
+    <group>
+    <item
+        android:iconTint="#fff"
+        android:title="Social">
+        <menu>
+            <item
+                android:id="@+id/facebook"
+                android:icon="@drawable/ic_icons8_facebook"
+                android:title="FaceBook"
+
+                />
+        </menu>
+    </item>
+    </group>
+    <group>
+    <item
+        android:iconTint="#fff"
+        android:title="Suggestions and Complaints">
+        <menu>
+            <item
+                android:id="@+id/Complaints"
+                android:icon="@drawable/ic_complaints"
+                android:title="Suggestions and Complaints"
+
+                />
+        </menu>
+    </item>
+    </group>
+
+</menu>
