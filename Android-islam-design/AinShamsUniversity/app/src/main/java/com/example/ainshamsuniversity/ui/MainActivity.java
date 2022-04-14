@@ -18,21 +18,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.work.Data;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
-import androidx.work.WorkRequest;
+import androidx.work.WorkerParameters;
 
 import com.example.ainshamsuniversity.R;
-import com.example.ainshamsuniversity.checking.CheckingWorker;
-import com.example.ainshamsuniversity.service.MService;
+import com.example.ainshamsuniversity.checking.CheckingAnnouncementsWorker;
+import com.example.ainshamsuniversity.checking.CheckingEventsWorker;
+import com.example.ainshamsuniversity.checking.CheckingNewsWorker;
 import com.google.android.material.navigation.NavigationView;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -82,7 +78,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         webSettings.setDomStorageEnabled(true);
         webSettings.setLoadsImagesAutomatically(true);
         webSettings.setAppCacheEnabled(true);
-        mWebView.loadUrl("#");
         mWebView.setWebViewClient(new WebViewClient(){
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
@@ -93,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
 
-        periodicWorkRequest = new PeriodicWorkRequest.Builder(CheckingWorker.class, 30, TimeUnit.SECONDS
+        periodicWorkRequest = new PeriodicWorkRequest.Builder(CheckingAnnouncementsWorker.class, 3, TimeUnit.SECONDS
         )
                 .addTag("chicking")
                 //.setConstraints(constraints)
@@ -102,14 +97,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //                        .build())
                 .build();
         workManager = WorkManager.getInstance(this);
-        workManager.enqueue(periodicWorkRequest);
+        //workManager.enqueue(periodicWorkRequest);
 
 
-//        workManager.enqueueUniquePeriodicWork(
-//                        "checknews",
-//                        ExistingPeriodicWorkPolicy.KEEP
-//                        ,
-//                        periodicWorkRequest);
+        workManager.enqueueUniquePeriodicWork(
+                        "checkevents",
+                        ExistingPeriodicWorkPolicy.REPLACE
+                        ,
+                        periodicWorkRequest);
+        try {
+            String intent= getIntent().getStringExtra("open");
+            switch (intent){
+                case "event":
+                    mWebView.loadUrl("https://science.asu.edu.eg/ar/events");
+                    break;
+                case"news":
+                    mWebView.loadUrl("https://science.asu.edu.eg/ar/news");
+                    break;
+                case "announce":
+                    mWebView.loadUrl("https://science.asu.edu.eg/ar/announcements");
+                    break;
+                default:
+                    mWebView.loadUrl("https://science.asu.edu.eg/ar");
+                    break;
+
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
     }
@@ -163,6 +179,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 mWebView.loadUrl("https://forms.office.com/r/HfejjtfynN");
                 drawerLayout.closeDrawer(GravityCompat.START);
                 break;
+            case R.id.gpa:
+                Toast.makeText(this, "Loading Facebook page...", Toast.LENGTH_LONG).show();
+                Intent intent=new Intent(getApplicationContext(),Gpa.class);
+                startActivity(intent);
+                drawerLayout.closeDrawer(GravityCompat.START);
+                break;
+
 
         }
 

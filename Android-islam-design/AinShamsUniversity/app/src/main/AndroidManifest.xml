@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.ainshamsuniversity">
+    package="com.example.ainshamsuniversity" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -14,25 +14,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AinShamsUniversity"
         android:usesCleartextTraffic="true"
-        tools:targetApi="m">
+        tools:targetApi="m" >
         <activity
-            android:name=".IntroActivity"
+            android:name=".ui.Gpa"
             android:exported="false" />
         <activity
-            android:name=".ui.University_Announce"
-            android:exported="false"
-            android:parentActivityName=".ui.MainActivity" />
-        <activity
-            android:name=".ui.University_Events"
-            android:exported="false"
-            android:parentActivityName=".ui.MainActivity" />
-        <activity
-            android:name=".ui.University_News"
-            android:exported="false"
-            android:parentActivityName=".ui.MainActivity" />
-        <activity
-            android:name=".splash.Splash"
-            android:exported="true">
+            android:name=".ui.Splash"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -42,10 +30,6 @@
         <activity
             android:name=".ui.MainActivity"
             android:exported="true" />
-
-        <service
-            android:name=".service.MService"
-            android:exported="false" />
 
         <meta-data
             android:name="preloaded_fonts"
