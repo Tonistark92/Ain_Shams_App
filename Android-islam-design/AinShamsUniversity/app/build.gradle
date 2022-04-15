@@ -75,6 +75,10 @@ dependencies {
     implementation "io.reactivex.rxjava3:rxjava:3.x.y"
 
 
+    //target view
+    implementation  'com.getkeepsafe.taptargetview:taptargetview:1.13.0'
+
+
 //    implementation 'agency.tango.android:material-intro-screen:{latest_release}'
 
 }

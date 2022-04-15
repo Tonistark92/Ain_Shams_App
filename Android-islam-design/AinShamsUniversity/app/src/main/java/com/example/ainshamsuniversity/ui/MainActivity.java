@@ -1,6 +1,7 @@
 package com.example.ainshamsuniversity.ui;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -10,7 +11,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -19,18 +19,14 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.work.Constraints;
-import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.NetworkType;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
-import androidx.work.WorkerParameters;
-
 import com.example.ainshamsuniversity.R;
 import com.example.ainshamsuniversity.checking.CheckingAnnouncementsWorker;
 import com.example.ainshamsuniversity.checking.CheckingEventsWorker;
 import com.example.ainshamsuniversity.checking.CheckingNewsWorker;
 import com.google.android.material.navigation.NavigationView;
-
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -39,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //            .setRequiredNetworkType(NetworkType.CONNECTED)
             .setRequiresCharging(true)
             .build();
+
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
@@ -165,6 +162,63 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
+
+//        new TapTargetSequence(this)
+//                .targets(
+//                        TapTarget.forView(b1,"this is my button p:","don't u dare to click on it -_-")
+//                                .outerCircleColor(R.color.teal_200)
+//                                .outerCircleAlpha(0.2f)
+//                                .targetCircleColor(android.R.color.holo_blue_bright)
+//                                .titleTextSize(10)
+//                                .textColor(R.color.design_default_color_on_primary)
+//                                .descriptionTextColor(R.color.white)
+//                                .descriptionTextSize(8)
+//                                .textColor(R.color.black)
+//                                .textTypeface(Typeface.SANS_SERIF)
+//                                .dimColor(R.color.purple_200)
+//                                .drawShadow(true)
+//                                .cancelable(true)
+//                                .tintTarget(false)
+//                                .transparentTarget(true)
+//                                .targetRadius(100),
+//                        TapTarget.forView(b2,"yeah am button two what do u need",":)")
+//                                .outerCircleColor(R.color.teal_200)
+//                                .outerCircleAlpha(0.2f)
+//                                .targetCircleColor(android.R.color.holo_blue_bright)
+//                                .titleTextSize(10)
+//                                .textColor(R.color.design_default_color_on_primary)
+//                                .descriptionTextColor(R.color.white)
+//                                .descriptionTextSize(8)
+//                                .textColor(R.color.black)
+//                                .textTypeface(Typeface.SANS_SERIF)
+//                                .dimColor(R.color.purple_200)
+//                                .drawShadow(true)
+//                                .cancelable(true)
+//                                .tintTarget(false)
+//                                .transparentTarget(true)
+//                                .targetRadius(100)).listener(new TapTargetSequence.Listener() {
+//            @Override
+//            public void onSequenceFinish() {
+//                //  Toast.makeText(this,"Horay",20).show();
+//            }
+//
+//            @Override
+//            public void onSequenceStep(TapTarget lastTarget, boolean targetClicked) {
+//                //Toast.makeText(Target.class,"Horaaay",Toast.LENGTH_SHORT).show();
+//
+//            }
+//
+//            @Override
+//            public void onSequenceCanceled(TapTarget lastTarget) {
+//
+//            }
+//        }).start();
+
+
+
+
 
 
     }
