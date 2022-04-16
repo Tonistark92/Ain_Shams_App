@@ -1,5 +1,5 @@
 # Android
-simple project for faculty of science ain shams university
+Simple project for faculty of science ain shams university
 
 The application contains : 
 
